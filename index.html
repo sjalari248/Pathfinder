@@ -14,6 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
     <style>
+
         * {
             font-family: "Outfit", serif;
             font-optical-sizing: auto;
@@ -45,7 +46,6 @@
             display: flex;
             background-color: transparent;
             border-width: 1px;
-            border-radius: 1px;
             border-color: grey;
             font-family: "Outfit", serif;
             font-optical-sizing: auto;
@@ -236,26 +236,107 @@
             accent-color: rgb(88, 54, 255);
         }
 
-    br {
-       display: block;
-       margin: 5px 0;
-    }
-    
-    .select2-container .select2-selection--single {
-        height: 51px !important;
-        border-radius: 0 !important;
-        padding: 5px !important;
-        line-height: 51px !important;
-    }
+        br {
+        display: block;
+        margin: 5px 0;
+        }
+        
+        .select2-container .select2-selection--single {
+            height: 51px !important;
+            border-radius: 0 !important;
+            padding: 5px !important;
+            line-height: 51px !important;
+        }
 
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        color: black !important;
-        display: flex;
-        align-items: center;
-        height: 100%;
-        text-align: right;
-        direction: rtl;
-    }
+        .select2-container--default .select2-selection--single {
+            height: 51px !important;
+            border-radius: 0 !important;
+            padding: 5px !important;
+            line-height: 51px !important;
+            border: 1px solid #808080 !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: black !important;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            text-align: right;
+            direction: rtl;
+        }
+
+        #collegeSearch,
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: black;   
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered.select2-selection__placeholder {
+            color: black !important;
+        }
+
+        .select2-container--default .select2-selection--single:hover {
+            background-color: rgba(88, 54, 255, 0.2) !important;
+            border-color: rgb(88, 54, 255) !important;
+            transition: all 0.3s ease;
+        }
+
+        .select2-container--default .select2-results__option {
+            transition: background-color 0.3s ease;
+        }
+
+        .select2-container--default .select2-results__option:hover,
+        .select2-container--default .select2-results__option--highlighted {
+            background-color: rgba(88, 54, 255, 0.2) !important;
+            color: rgb(88, 54, 255) !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+             border-color: rgba(0, 0, 0, 0.545) transparent transparent transparent !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: black !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-style: solid;
+            border-width: 0 2px 2px 0;
+            border-color: rgba(0, 0, 0, 0.545);
+            transform: rotate(45deg);
+            margin: 0;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__placeholder::before {
+            content: "";
+            display: inline-block;
+            vertical-align: middle;
+            background-image: url(/images/searchIcon.svg);
+            background-size: 18px 18px;
+            background-repeat: no-repeat;
+            width: 18px;
+            height: 18px;
+            margin-right: -18px;
+            margin-left: 4px;
+        }
+
+        .loader {
+           position: fixed;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           width: 50px;
+           height: 50px;
+           border: 6px solid #ccc;
+           border-top: 6px solid #007bff;
+           border-radius: 50%;
+           animation: spin 1s linear infinite;
+           z-index: 1000;
+        }
+
+       @keyframes spin {
+          0% { transform: translate(-50%, -50%) rotate(0deg); }
+          100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
 
     </style>
 </head>
@@ -304,10 +385,10 @@
 
         <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 15px;">
             <div style="width: 49.5%;">
-                <p style="margin-bottom: 10px;">Select University/College</p>
-                <select id="collegeSearch" class="border-gray-300" style="width: 90.3%; font-size: 16px; padding: 5px; border-radius: 0; height: 51px;"></select>
+                <p style="margin-bottom: 10px;">Target University/College</p>
+                <select id="collegeSearch">
+                </select>
             </div>
-
             <div style="width: 49.5%;">
                 <p style="margin-bottom: 10px;">Most Recently Completed Math Class</p>
                 <select id="mathClass" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg">
@@ -362,33 +443,34 @@
 
     $(document).ready(function() {
         $('#collegeSearch').select2({
-            placeholder: "Search College/University",
-            allowClear: true,
-            ajax: {
-                url: 'https://api.data.gov/ed/collegescorecard/v1/schools.json',
-                dataType: 'json',
-                data: function (params) {
-                    return {
-                        api_key: 'Bu6Pku0B3kW9OTGe9j4ONHhL807YTmKFghvC7IHc',
-                        'school.name': params.term,
-                        per_page: 20
-                    };
-                },
-                processResults: function (data) {
-                    if (!data.results) {
-                        console.error("API Response Error:", data);
-                        return { results: [] };
-                    }
-                    return {
-                        results: data.results.map(function(school) {
-                            return { id: school.id, text: school.school.name };
-                        })
-                    };
-                },
-                cache: true
-            },
-            minimumInputLength: 3
-        });
+    placeholder: "Search College/University",
+    width: '90%',
+    allowClear: true,
+    ajax: {
+        url: 'https://api.data.gov/ed/collegescorecard/v1/schools.json',
+        dataType: 'json',
+        data: function (params) {
+            return {
+                api_key: 'Bu6Pku0B3kW9OTGe9j4ONHhL807YTmKFghvC7IHc',
+                'school.name': params.term,
+                per_page: 20
+            };
+        },
+        processResults: function (data) {
+            if (!data.results) {
+                console.error("API Response Error:", data);
+                return { results: [] };
+            }
+            return {
+                results: data.results.map(function(school) {
+                    return { id: school.id, text: school.school.name };
+                })
+            };
+        },
+        cache: true
+    },
+    minimumInputLength: 3
+});
     });
 
     function updateDifficultyPercentage() {
@@ -441,13 +523,16 @@
         });
     });
 
-    async function gradeSelected(grade) {
+async function gradeSelected(grade) {
+
+  console.log("Fetching recommendations...");
+
   const userInterest = document.getElementById("interest").value;
   const userCollege = document.getElementById("collegeSearch").value;
   const userMath = document.getElementById("mathClass").value;
   const userDifficulty = document.getElementById("difficultySlider").value;
 
-  const systemPrompt = "You are an AI that recommends exactly six classes. If the user is in 12th grade, recommend 2 core classes and 4 electives. Otherwise, 4 core classes and 2 electives. Provide nothing else.";
+  const systemPrompt = "You are an AI that recommends exactly six classes. If the user is in 12th grade, recommend 2 core classes and 4 electives. Otherwise, 4 core classes and 2 electives. Provide nothing else. ONLY 6 CLASSES SHOULD BE RECOMMENDED TOTAL NO MATTER WHAT";
   const userPrompt = "Interest: " + userInterest +
     "\nCollege: " + userCollege +
     "\nGrade: " + grade +
