@@ -12,7 +12,389 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <link rel="stylesheet" href="main.css">
+
+<style>
+        
+    * {
+        font-family: "Outfit", serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-style: normal;
+        margin: 0px;
+        outline: none;
+    }
+
+    body {
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        height: 100vh; 
+        min-width: 1300px;
+        background-color: rgb(233, 233, 233);
+    }
+
+    .loader {
+        width: fit-content;
+        font-size: 40px;
+        font-family: monospace;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #0000;
+        -webkit-text-stroke: 1px rgb(0, 0, 0);
+        --g:conic-gradient(rgb(88, 54, 255) 0 0) no-repeat text;
+        background:var(--g) 0,var(--g) 1ch,var(--g) 2ch,var(--g) 3ch,var(--g) 4ch,var(--g) 5ch,var(--g) 6ch;
+        background-position-y: 100%;
+        animation: l19 1.5s linear infinite alternate;
+
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    body {
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        height: 100vh; 
+        min-width: 1300px;
+        background-color: rgb(233, 233, 233);
+        backdrop-filter: blur(5px);
+    }
+
+    .loader:before {
+        content: "Loading";
+    }
+
+    @keyframes l19 {
+        0%  {background-size: 1ch 0   ,1ch 0   ,1ch 0   ,1ch 0   ,1ch 0   ,1ch 0   ,1ch 0   }
+        25% {background-size: 1ch 100%,1ch 50% ,1ch 0   ,1ch 0   ,1ch 0   ,1ch 50% ,1ch 100%}
+        50% {background-size: 1ch 100%,1ch 100%,1ch 50% ,1ch 0   ,1ch 50% ,1ch 100%,1ch 100%}
+        75% {background-size: 1ch 100%,1ch 100%,1ch 100%,1ch 50% ,1ch 100%,1ch 100%,1ch 100%}
+        to  {background-size: 1ch 100%,1ch 100%,1ch 100%,1ch 100%,1ch 100%,1ch 100%,1ch 100%}
+    }
+
+
+    h1 {
+        font-weight: 500 !important;
+        font-size: 60px;
+        width: 400px;
+    }
+
+    #custom-file-label {
+        height: 50px;
+        width: 100%;
+        display: flex;
+        background-color: transparent;
+        border-width: 1px;
+        border-radius: 1px;
+        border-color: grey;
+        font-family: "Outfit", serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-style: normal;
+        border-style: solid;
+        position: relative;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        border-width: 1px;
+
+        transition: all 0.3s ease;
+    }
+
+
+    h1 {
+        font-weight: 500 !important;
+        font-size: 60px;
+        width: 400px;
+    }
+
+    #custom-file-label {
+        height: 50px;
+        width: 90%;
+        display: flex;
+        background-color: transparent;
+        border-width: 1px;
+        border-color: grey;
+        font-family: "Outfit", serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-style: normal;
+        border-style: solid;
+        position: relative;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        border-width: 1px;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        justify-content: end;
+    }
+
+    #downloadIcon {
+        width: 18px;
+        height: 18px;
+        margin-left: 2.5px;
+        background-image: url(/images/uploadUnDone.svg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    #custom-file-label:hover {
+        background-color: rgba(88, 54, 255, 0.2);
+        border-color: rgb(88, 54, 255);
+    }
+
+    #courseCatalog {
+        display: none;
+    }
+
+    button {
+        flex: 1;
+        height: 60px;
+        background-color: rgb(88, 54, 255);
+        border-style: solid;
+        border-width: 2px;
+        border-color: transparent;
+        color: white;
+        font-weight: 400;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    button:hover {
+        background-color: transparent;
+        border-color: rgb(88, 54, 255);
+        color: rgb(88, 54, 255);
+    }
+
+    .underlineText {
+        position: relative;
+    }
+
+    .underlineText::after {
+        position: absolute;
+        content: "";
+        width: 0%;
+        height: 3px;
+        background-color: rgb(88, 54, 255);
+        right: 0px;
+        bottom: 0px;
+        transition: all 0.3s ease;
+    }
+
+    .underlineText:hover::after {
+        width: 100%;
+    }
+
+    #outputArea {
+        resize: none;
+        width: 100%;
+        height: 600px;
+        margin-top: 50px;
+    }
+
+    #gradeSelecter {
+        width: 100%;
+        height: 40px;
+    }
+
+    #section1 {
+        width: 50%;
+        height: 100%;
+        display: flex;
+        align-items: end;
+        flex-direction: column;
+        justify-content:center;
+        position: relative;
+        padding: 50px;
+        box-sizing: border-box;
+    }
+
+    select {
+        border-color: grey;
+        height: 51px;
+        width: 90%;
+        border-width: 1px;
+        font-size: 16px;
+        margin-top: 1px;
+        transition: all 0.3s ease;
+    }
+
+    select:hover {
+        background-color: rgba(88, 54, 255, 0.2);
+        border-color: rgb(88, 54, 255);
+    }
+
+    #section1 * {
+        text-align: right;
+    }
+
+    #section2 {
+        width: 50%;
+        height: 100%;
+        padding: 100px;
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .divider {
+        width: 100%;
+        height: 2px;
+        background-color: rgba(0, 0, 0, 0.6);
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .courseDisplay {
+        position: relative;
+        width: 100%;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.3s ease;
+    }
+
+    .courseDisplay:hover::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 250%;
+        background-color: rgba(88, 54, 255, 0.4);
+        left: 0px;
+        top: -75%;
+    }
+
+    .courseDisplay::after {
+        content: "";
+        position: absolute;
+        width: 0%;
+        height: 250%;
+        background-color: rgba(88, 54, 255, 0);
+        left: 50%;
+        top: -75%;
+        transition: all 0.3s ease;
+    }
+
+    .courseDisplay:hover {
+        color: rgb(0, 0, 0);
+        font-weight: 400;
+        font-size: 25px;
+    }
+
+    #container {
+        width: 90%; 
+        height: 90%; 
+        background-color: white; 
+        border-radius: 25px; 
+        display: flex;
+        box-shadow: 0px 5px 20px 0px #00000092;
+    }
+
+    #difficultySlider {
+        width: 100%;
+        accent-color: rgb(88, 54, 255);
+    }
+
+    br {
+    display: block;
+    margin: 5px 0;
+    }
+
+    .select2-container .select2-selection--single {
+        height: 51px !important;
+        border-radius: 0 !important;
+        padding: 5px !important;
+        line-height: 51px !important;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: 51px !important;
+        border-radius: 0 !important;
+        padding: 5px !important;
+        line-height: 51px !important;
+        border: 1px solid #808080 !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: black !important;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        text-align: right;
+        direction: rtl;
+    }
+
+    #collegeSearch,
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: black;   
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered.select2-selection__placeholder {
+        color: black !important;
+    }
+
+    .select2-container--default .select2-selection--single:hover {
+        background-color: rgba(88, 54, 255, 0.2) !important;
+        border-color: rgb(88, 54, 255) !important;
+        transition: all 0.3s ease;
+    }
+
+    .select2-container--default .select2-results__option {
+        transition: background-color 0.3s ease;
+    }
+
+    .select2-container--default .select2-results__option:hover,
+    .select2-container--default .select2-results__option--highlighted {
+        background-color: rgba(88, 54, 255, 0.2) !important;
+        color: rgb(88, 54, 255) !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        border-color: rgba(0, 0, 0, 0.545) transparent transparent transparent !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__placeholder {
+        color: black !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        border-style: solid;
+        border-width: 0 2px 2px 0;
+        border-color: rgba(0, 0, 0, 0.545);
+        transform: rotate(45deg);
+        margin: 0;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__placeholder::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        background-image: url(/images/searchIcon.svg);
+        background-size: 18px 18px;
+        background-repeat: no-repeat;
+        width: 18px;
+        height: 18px;
+        margin-right: -18px;
+        margin-left: 4px;
+    }
+
+</style>
+
 </head>
 <body>
     
@@ -116,36 +498,43 @@
     let pdfText = null;
 
     $(document).ready(function() {
-        $('#collegeSearch').select2({
-    placeholder: "Search College/University",
-    width: '90%',
-    allowClear: true,
-    ajax: {
-        url: 'https://api.data.gov/ed/collegescorecard/v1/schools.json',
-        dataType: 'json',
-        data: function (params) {
-            return {
-                api_key: 'Bu6Pku0B3kW9OTGe9j4ONHhL807YTmKFghvC7IHc',
-                'school.name': params.term,
-                per_page: 20
-            };
+    $('#collegeSearch').select2({
+        placeholder: "Search College/University",
+        width: '90%',
+        allowClear: true,
+        ajax: {
+            url: 'https://api.data.gov/ed/collegescorecard/v1/schools.json',
+            dataType: 'json',
+            data: function (params) {
+                return {
+                    api_key: 'Bu6Pku0B3kW9OTGe9j4ONHhL807YTmKFghvC7IHc',
+                    'school.name': params.term,
+                    per_page: 20
+                };
+            },
+            processResults: function (data) {
+                if (!data.results) {
+                    console.error("API Response Error:", data);
+                    return { results: [] };
+                }
+                return {
+                    results: data.results.map(function(school) {
+                        return { id: school.id, text: school.school.name };
+                    })
+                };
+            },
+            cache: true
         },
-        processResults: function (data) {
-            if (!data.results) {
-                console.error("API Response Error:", data);
-                return { results: [] };
+        minimumInputLength: 3,
+        templateSelection: function (state) {
+            if (state && state.text && state.text.length > 30) {
+                return "..." + state.text.substring(0, 27);
             }
-            return {
-                results: data.results.map(function(school) {
-                    return { id: school.id, text: school.school.name };
-                })
-            };
-        },
-        cache: true
-    },
-    minimumInputLength: 3
-});
+            return state.text;
+        }
     });
+});
+
 
     function updateDifficultyPercentage() {
         let slider = document.getElementById("difficultySlider");
@@ -199,54 +588,47 @@
 
 async function gradeSelected(grade) {
 
+    if (!pdfText) {
+        alert("Please upload a course catalog PDF.");
+        document.getElementById('recommendation-loader').remove();
+        return;
+    }
+
   console.log("Fetching recommendations...");
-      // Loading indicator
-        // I used copilot
-                            // Create and append the loader
-                            const loader = document.createElement('div');
-                            loader.className = 'loader';
-                            loader.id = 'recommendation-loader'; // Add an ID to easily remove it later
-                            document.getElementById('container').style.filter = 'blur(5px)';
-                            document.body.appendChild(loader);
+  
+    const loader = document.createElement('div');
+    loader.className = 'loader';
+    loader.id = 'recommendation-loader';
+    document.getElementById('container').style.filter = 'blur(5px)';
+    document.body.appendChild(loader);
 
-                            // Disable all interactive elements
-                            const interactiveElements = document.querySelectorAll('button, select, input, textarea, a');
-                            interactiveElements.forEach(element => {
-                                element.disabled = true;
-                            });
+    const interactiveElements = document.querySelectorAll('button, select, input, textarea, a');
+    interactiveElements.forEach(element => {
+        element.disabled = true;
+    });
 
-                            // Re-enable interactive elements
-                            function enableInteractiveElements() {
-                                interactiveElements.forEach(element => {
-                                    element.disabled = false;
-                                });
-                            }
+    function enableInteractiveElements() {
+        interactiveElements.forEach(element => {
+            element.disabled = false;
+        });
+    }
 
-                            
-                            if (!pdfText) {
-                                alert("Please upload a course catalog PDF.");
-                                // Remove the loader if no PDF
-                                document.getElementById('recommendation-loader').remove();
-                                return;
-                            }
+    try {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        const recommendations = ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6"]
+        console.log("Recommended Courses:", recommendations);
+    } catch (error) {
+        console.error("Error getting recommendations:", error);
+        alert("An error occurred while processing your request.");
 
-                            try {
-                                await new Promise(resolve => setTimeout(resolve, 5000));
-                                const recommendations = ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6"] //placeholder
-                                console.log("Recommended Courses:", recommendations);
-                            } catch (error) {
-                                console.error("Error getting recommendations:", error);
-                                alert("An error occurred while processing your request.");
-
-                            } finally {
-                                // Remove the loader in finally block to ensure it's always removed
-                                const loaderElement = document.getElementById('recommendation-loader');
-                                if (loaderElement) {
-                                    loaderElement.remove();
-                                }
-                                document.getElementById('container').style.filter = 'none';
-                                enableInteractiveElements(); // Re-enable interactive elements
-                            }                           
+    } finally {
+        const loaderElement = document.getElementById('recommendation-loader');
+        if (loaderElement) {
+            loaderElement.remove();
+        }
+        document.getElementById('container').style.filter = 'none';
+        enableInteractiveElements();
+    }                           
 
 
   const userInterest = document.getElementById("interest").value;
@@ -301,7 +683,7 @@ async function gradeSelected(grade) {
     const response = await fetch("https://api.edenai.run/v2/multimodal/chat", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjFiNDYzNDEtZmRjMy00NzBkLTllNGYtMTUyOTI3ZWFhYTJlIiwidHlwZSI6ImFwaV90b2tlbiJ9._w69x9g-So4O1Ul7P3u9dekwKnSjWnwViqqzAwLvYHE",
+        "Authorization": "Bearer [YOUR API KEY HERE]",
         "Content-Type": "application/json"
       },
       body: JSON.stringify(body)
