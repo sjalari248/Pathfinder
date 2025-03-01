@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Planner</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+</head>
+<body>
+    
+<div id="container">
+    <div id="section1">
+        <h1 class="underlineText" id="header">High School Class Planner</h1>
+        <h3 style="margin-bottom: 50px; margin-top: 15px;">
+            It's hard trying to figure out what classes to take and which classes would fit you best. This tool allows you to
+            do that easily! Just enter in the required info and choose what year you're in.
+        </h3>
+
+        <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 15px;">
+            <div style="width: 49.5%; position: relative; display: flex; flex-direction: column; align-items: end; align-items: end;">
+                <p style="margin-bottom: 10px;">Upload Your Course Catalog</p>
+                <label for="courseCatalog" id="custom-file-label">
+                    <p id="uploadText">Upload PDF File</p>
+                    <div id="downloadIcon"></div>
+                </label>
+                <input type="file" id="courseCatalog" class="hidden-file-input" accept="application/pdf">
+
+                <script>
+                    document.getElementById("courseCatalog").addEventListener("change", function() {
+                        if (this.files.length > 0) {
+                            let fileName = this.files[0].name; 
+                            document.getElementById("downloadIcon").style.backgroundImage = "url(/images/uploadDone.svg)"
+                        }
+                    });
+                </script>
+            </div>
+            <div style="width: 49.5%;">
+                <p style="margin-bottom: 10px;">Field of Interest</p>
+                <select id="interest" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg">
+                    <option disabled selected>Select Field of Interest</option>
+                    <option>Engineering</option>
+                    <option>Computer Science</option>
+                    <option>Medicine</option>
+                    <option>Art</option>
+                    <option>Business</option>
+                    <option>Humanities</option>
+                    <option>No Specific Interest</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 15px;">
+            <div style="width: 49.5%;">
+                <p style="margin-bottom: 10px;">Target University/College</p>
+                <select id="collegeSearch">
+                </select>
+            </div>
+            <div style="width: 49.5%;">
+                <p style="margin-bottom: 10px;">Most Recently Completed Math Class</p>
+                <select id="mathClass" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg">
+                    <option disabled selected>Select Class</option>
+                    <option>Grade 8 Mathematics</option>
+                    <option>Algebra I</option>
+                    <option>Geometry</option>
+                    <option>Algebra II</option>
+                    <option>Precalculus</option>
+                    <option>Calculus</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <label for="difficulty" style="margin: 0;">Class Difficulty Preference:</label>
+            <span id="difficultyValue" style="margin-left: -10px; display: inline-block; width: 50px; text-align: right;">50%</span>
+        </div>
+        <input type="range" id="difficultySlider" min="1" max="100" value="50" style="margin-bottom: 15px;">
+
+        <p>Find results for each grade</p>
+        <br>
+        <div style="display: flex; width: 100%; justify-content: space-between;">
+            <button onclick="gradeSelected(9)" style="margin: 0px 5px 0px 0px;">Freshman</button>
+            <button onclick="gradeSelected(10)" style="margin: 0px 5px 0px 5px;">Sophomore</button>
+            <button onclick="gradeSelected(11)" style="margin: 0px 5px 0px 5px;">Junior</button>
+            <button onclick="gradeSelected(12)" style="margin: 0px 0px 0px 5px;">Senior</button>
+        </div>
+    </div>
+
+    <div id="section2">
+        <h3 class="courseDisplay">Course 1</h3>
+        <div class="divider"></div>
+        <h3 class="courseDisplay">Course 2</h3>
+        <div class="divider"></div>
+        <h3 class="courseDisplay">Course 3</h3>
+        <div class="divider"></div>
+        <h3 class="courseDisplay">Course 4</h3>
+        <div class="divider"></div>
+        <h3 class="courseDisplay">Course 5</h3>
+        <div class="divider"></div>
+        <h3 class="courseDisplay">Course 6</h3>
+    </div>
+</div>
+
+<script src="main.js"></script>
+
+</body>
+</html>
