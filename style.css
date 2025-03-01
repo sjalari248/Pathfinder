@@ -124,7 +124,7 @@ h1 {
     width: 18px;
     height: 18px;
     margin-left: 2.5px;
-    background-image: url(./images/uploadUnDone.svg);
+    background-image: url("uploadUnDone.svg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -368,7 +368,7 @@ margin: 5px 0;
     content: "";
     display: inline-block;
     vertical-align: middle;
-    background-image: url(./images/searchIcon.svg);
+    background-image: url("searchIcon.svg");
     background-size: 18px 18px;
     background-repeat: no-repeat;
     width: 18px;
