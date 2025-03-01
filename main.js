@@ -187,7 +187,7 @@ try {
 const response = await fetch("https://api.edenai.run/v2/multimodal/chat", {
   method: "POST",
   headers: {
-    "Authorization": "Bearer [YOUR API KEY HERE]",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNTFhODg4MzctMjBhYi00NjA5LWJkN2YtYWRkZWM5NTUxM2YwIiwidHlwZSI6ImFwaV90b2tlbiJ9.JTAXJaV-ChrxvFavVLWIVmopix9KCzjYPlWGphicaa0",
     "Content-Type": "application/json"
   },
   body: JSON.stringify(body)
