@@ -140,7 +140,7 @@ const userCollege = document.getElementById("collegeSearch").value;
 const userMath = document.getElementById("mathClass").value;
 const userDifficulty = document.getElementById("difficultySlider").value;
 
-const systemPrompt = "You are an AI that recommends exactly six classes. If the user is in 12th grade, recommend 2 core classes and 4 electives. Otherwise, 4 core classes and 2 electives. Provide nothing else. ONLY 6 CLASSES SHOULD BE RECOMMENDED TOTAL NO MATTER WHAT";
+const systemPrompt = "You are an AI that recommends exactly six classes. If the user is in 12th grade, recommend 2 core classes and 4 electives. Otherwise, 4 core classes and 2 electives. Make sure that if you recommend a math class, it is one level of diffivulty above the user's most recent math class completed (e.g. Precalculus > AP Calculus AB or AP Calculus BC). Provide nothing else. ONLY A TOTAL OF 6 CLASSES SHOULD BE RECOMMENDED TOTAL NO MATTER WHAT";
 const userPrompt = "Interest: " + userInterest +
 "\nCollege: " + userCollege +
 "\nGrade: " + grade +
@@ -177,7 +177,7 @@ body.messages.push({
 body.messages.push({
 role: "user",
 content: [
-  { type: "text", content: { text: "Please make sure that 1 English class is recommended. ONLY 6 CLASSES SHOULD BE RECOMMENDED TOTAL NO MATTER WHAT" } }
+  { type: "text", content: { text: "Please make sure that 1 English class is recommended. ONLY A TOTAL OF 6 CLASSES SHOULD BE RECOMMENDED TOTAL NO MATTER WHAT" } }
 ]
 });
 
